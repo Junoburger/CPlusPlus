@@ -37,6 +37,7 @@
 *.app
 
 .vscode
+/Exercise Files
 
 # End of https://www.toptal.com/developers/gitignore/api/c++
 
