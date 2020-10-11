@@ -1,6 +1,8 @@
 #include <iostream> 
  #include <ctime>
  #include <cstdlib>
+#include <fstream>
+
 using namespace std; 
  
 string FindPlayerName(string names[], bool playerTurn);
@@ -15,13 +17,17 @@ int main()
   bool player1Turn = true;  
  
   bool gameOver = false;    
-  
+  int moveCounter = 0;
   int chipsInPile = 0;  
   int chipsTaken = 0; 
 
   char userChoice;
   string playerNames[2];
   
+// Output file variables
+ofstream outFile;
+outFile.open("Winners.txt", ios::app);
+
   //seed the random number generator
    srand(time(0));
   
@@ -36,22 +42,26 @@ int main()
 
   	cout << "This round will start with " << chipsInPile << " chips in the pile\n";
     gameOver = false;
+	moveCounter = 0;
     while (gameOver == false)
 	{
      chipsTaken = askMove(player1Turn, chipsInPile, playerNames);
 	 chipsInPile = chipsInPile - chipsTaken;
 	 cout << "There are " << chipsInPile << " left in the pile\n";
 	 player1Turn = !player1Turn;
+	 moveCounter++;
 	 if (chipsInPile == 0)
 	 {
 	 	gameOver = true;
-	    cout << FindPlayerName(playerNames, player1Turn) << ", congratulations you won\n";	
+		cout << FindPlayerName(playerNames, player1Turn) << ", congratulations you won\n";	
+	    outFile << FindPlayerName(playerNames, player1Turn) << " won in " << moveCounter << " moves";
 	 }
  	}
   	cout << "Do you wish to play again? (Y/N)\n";
     cin >> userChoice;
     userChoice = toupper(userChoice);
    }while ( userChoice == 'Y');  
+   outFile.close();
   return 0; 
 } 
 ////////////////////////////////////////////////////////////////////////////////////
